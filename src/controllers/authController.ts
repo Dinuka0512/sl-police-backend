@@ -54,15 +54,10 @@ export const login = async (
       return;
     }
 
+    const normalizedEmail = String(email ?? "").trim().toLowerCase();
+
     const user = await userRepository.findOne({
-      where: {
-        email: {
-          $regex: new RegExp(
-            `^${String(email).trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
-            "i"
-          ),
-        },
-      },
+      where: { email: normalizedEmail },
     });
 
     if (!user) {
